@@ -1,14 +1,8 @@
 import styled from "styled-components";
 import ColourSwatch from "../components/ColourSwatch";
-import {
-	TextInput,
-	SubmitInput,
-	CheckInput,
-	RadioField,
-	RadioInput,
-} from "../components/Inputs";
+import { SubmitInput, CheckInput, RadioField } from "../components/Inputs";
 import { Link, NavLink } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+//import Sidebar from "../components/Sidebar";
 import DivInterface from "../types/divInterface";
 
 // **GENERAL
@@ -48,24 +42,27 @@ export const NavContainer = styled.nav`
 	display: flex;
 	background-color: var(--dark-background);
 	justify-content: space-between;
-	height: 50px;
+	height: 55px;
 	width: 100%;
-	padding: 1.5% 15% 0.5%;
-	border-bottom: 2px solid var(--accent-blue);
+	padding: 0 15% 0;
+	border-bottom: 4px solid var(--accent-blue);
 	position: sticky;
 	top: 0;
 	z-index: 2;
 `;
 export const NavButton = styled(NavLink)`
+	display: flex;
+	place-items: center;
+	text-align: center;
 	font-family: var(--font-para);
-	font-size: calc(var(--font-size-small) * 1.1);
+	font-size: 18px;
 	text-decoration: none;
 	background-color: var(--accent-pink);
-	padding: 0.8%;
+	padding: 15px 5px;
+	margin: 10px;
 	border-radius: 10px;
 	box-shadow: -5px -5px var(--accent-yellow);
 	transition: all 0.3s ease-out;
-
 	&:link,
 	&:visited {
 		color: white;
@@ -78,34 +75,14 @@ export const NavButton = styled(NavLink)`
 		box-shadow: 3px -3px var(--accent-yellow);
 	}
 `;
-export const LogoutButtonSC = styled.button`
-	font-family: var(--font-para);
-	font-size: calc(var(--font-size-small) * 1.1);
-	text-decoration: none;
-	background-color: var(--accent-pink);
-	padding: 0.8%;
-	border-radius: 10px;
-	box-shadow: -5px -5px var(--accent-yellow);
-	transition: all 0.3s ease-out;
-	color: white;
-	text-shadow: 1px 1px 1px var(--o-black);
-
-	&:hover {
-		box-shadow: 5px -5px var(--accent-yellow);
-	}
-	&:active {
-		box-shadow: 3px -3px var(--accent-yellow);
-	}
-`;
 
 // **FOOTER
 export const AppFooterSC = styled.footer`
 	background-image: linear-gradient(1turn, #043742, var(--accent-blue));
 	width: 100%;
-	border-bottom: 2px solid var(--o-white);
-	position: sticky;
+	/* position: sticky;
 	bottom: 0;
-	z-index: 2;
+	z-index: 2; */
 `;
 
 export const AppFooterTextSC = styled.h4`
@@ -219,30 +196,41 @@ export const PaletteListSC = styled.article`
 `;
 export const PaletteHeaderSC = styled.h2`
 	font-family: var(--font-display);
-	font-size: var(--font-size-med);
+	font-size: var(--font-size-large);
+	margin: 1%;
+	color: var(--text-background);
+	text-shadow: 0 0 1px var(--dark-background), 2px 2px 2px var(--o-black);
 `;
 export const ColourPaletteSC = styled.section`
 	display: flex;
+	place-content: center;
 	place-items: center;
 	flex-direction: column;
 	/* height: 70vh; */
-	//width: 90%;
-	margin: 5% 5%;
-	padding: 5%;
+	min-width: 90%;
+	max-width: 96%;
+	flex-grow: 2;
+	margin: 2%;
 	background-color: var(--light-background);
 	box-shadow: 0 0 4px 4px var(--dark-background) inset;
-	border: 5px double var(--accent-blue);
+	border: 5px double var(--o-black);
 	border-radius: 30px;
 `;
 export const SwatchContainerSC = styled.article`
 	margin: 2% auto;
+	//padding: 0 5%;
+	width: 94%;
 	/* display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	width: fit-content;
-	flex-grow: 1; */
+	flex-flow: row wrap; */
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: 5px;
+	//flex-shrink: 1;
+	//justify-content: space-between;
+	//width: fit-content;
+	//flex-grow: 1;
+	/* display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr; */
 `;
 
 export const GradientBar: React.FC<DivInterface> = (props) => {
@@ -254,24 +242,28 @@ export const GradientBarSC = styled(GradientBar)`
 	// width: ${(props) => (props.numColour ? props.numColour * 135 : 135)}px;
 	// this isn't resizeable, use %, vw, or em to make it responsive
 	//width: 680px;
-	width: 70%;
+	width: 90%;
 	height: 1.5em;
 	border-radius: 10px;
-	box-shadow: 0 0 0 2px var(--dark-background);
+	box-shadow: var(--button-shine), var(--small-drop-shadow);
 	//border: 5px double var(--dark-background);
 	background-image: linear-gradient(
 		90deg,
 		${(props) => (props.gradient ? props.gradient : "#ffffff")}
 	);
-	margin-top: 20px;
+	margin: 2%;
 `;
 // **SWATCH
 export const ColourSwatchSC = styled(ColourSwatch)`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr repeat(6, auto) 1fr;
+	grid-template-rows: 1fr repeat(8, auto) 1fr;
 	justify-items: center;
-	flex-grow: 1;
+	//width: 140px;
+	//flex-grow: 1;
+	box-shadow: var(--button-shine), var(--large-drop-shadow);
+	border-radius: 5px;
+	//margin: 5px;
 	/* border: 2px solid var(--dark-background); */
 	/* box-shadow: 0 0 0 2px var(--dark-background); */
 `;
@@ -288,13 +280,14 @@ export const ColourHexSC = styled.p`
 export const ColourInputSC = styled.input`
 	grid-row: 4 / 6;
 	grid-column: 1 / 3;
-	margin: 5% auto;
-	border: 1px solid white;
+	margin: 5%;
+	//border: 1px solid var(--o-black);
 	border-radius: 50%;
-	width: 7em;
-	height: 7em;
+	box-shadow: 0 0 2px 1px var(--o-white), 0 0 2px 1px var(--o-black) inset;
+	width: 8em;
+	height: 8em;
 	&:hover {
-		box-shadow: 0 0 4px 2px var(--o-white);
+		box-shadow: 0 0 4px 2px var(--o-white), 0 0 4px 1px var(--o-black) inset;
 	}
 	&::-webkit-color-swatch {
 		border-radius: 50%;
@@ -331,6 +324,35 @@ export const AddNewSC = styled.button`
 		filter: drop-shadow(0 0 4px var(--o-white));
 	}
 `;
+export const SubmitColourSC = styled.button`
+	grid-row: 7 / 8;
+	grid-column: 1 / 3;
+	margin: 2%;
+	background: none;
+	font-family: var(--font-title);
+	font-size: var(--font-size-med);
+	color: white;
+	text-shadow: 2px 2px 2px var(--o-black), -2px -2px 2px var(--o-white);
+	transition: all 0.2s ease-out;
+	&:hover {
+		text-shadow: -2px -2px 2px var(--o-black), 2px 2px 2px var(--o-white);
+	}
+`;
+export const DeleteColourSC = styled.button`
+	grid-row: 1 / 2;
+	grid-column: 2 / 3;
+	justify-self: right;
+	margin: 2%;
+	background: none;
+	font-family: var(--font-title);
+	font-size: var(--font-size-med);
+	color: white;
+	text-shadow: 2px 2px 2px var(--o-black), -2px -2px 2px var(--o-white);
+	transition: all 0.2s ease-out;
+	&:hover {
+		text-shadow: -2px -2px 2px var(--o-black), 2px 2px 2px var(--o-white);
+	}
+`;
 export const PlusButtonSC = styled.button`
 	grid-row: 3 / 4;
 	font-family: var(--font-title);
@@ -349,13 +371,14 @@ export const SidebarMainSC = styled.main`
 	/* grid-template-columns: 1fr 9fr; */
 `;
 export const SidebarDivSC = styled.nav`
-	background-color: var(--dark-background);
+	background-color: var(--o-grey);
+	border-right: 4px solid var(--accent-blue);
 	//width: max-content;
 	//flex-basis: content;
 	//flex-grow: 1;
 	height: 100vh;
 	position: sticky;
-	top: 50px;
+	top: 55px;
 	align-self: flex-start;
 `;
 export const SidebarSC = styled.div`
@@ -371,31 +394,64 @@ export const SidebarButtonSC = styled.button`
 `;
 export const SidebarUlSC = styled.ul`
 	list-style-type: none;
-	width: 10rem;
+	width: 9rem;
 	margin: 0;
 	padding: 0 5%;
 `;
 export const SidebarLiSC = styled.li`
 	margin: 2% 5%;
 `;
-export const SidebarLinkSC = styled(NavLink)`
+export const SidebarLinkSC = styled.a`
 	font-family: var(--font-para);
 	font-size: var(--font-size-small);
 	text-decoration: none;
+	//border-radius: 1px;
+	animation-duration: 0.2s;
+	//transition: all 0.4s ease-in;
 	&:link,
 	&:visited {
 		color: white;
 	}
 	&:hover {
-		text-decoration: underline var(--accent-yellow);
+		border-bottom: 2px solid var(--accent-yellow);
+		animation-name: yellow-line;
+		//text-decoration: underline var(--accent-yellow);
 	}
 	&:active {
-		text-decoration: underline var(--accent-pink);
+		//text-decoration: underline var(--accent-pink);
+	}
+	@keyframes yellow-line {
+		0% {
+			border-bottom: 0px solid var(--accent-yellow);
+		}
+		50% {
+			border-bottom: 1px solid var(--accent-yellow);
+		}
+		100% {
+			border-bottom: 2px solid var(--accent-yellow);
+		}
 	}
 `;
 // **THEMES
-export const ThemeContainerSC = styled.section``;
-export const ThemeHeaderSC = styled.h3``;
+export const ThemeListSC = styled.article`
+	display: flex;
+	flex-direction: column;
+	place-items: center;
+	flex-grow: 1;
+`;
+export const ThemeContainerSC = styled.section`
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+`;
+export const ThemeHeaderSC = styled.h3`
+	place-self: center;
+	font-family: var(--font-display);
+	font-size: var(--font-size-title);
+	margin: 1%;
+	color: var(--text-background);
+	text-shadow: 0 0 1px var(--dark-background), 2px 2px 2px var(--o-black);
+`;
 //  **ERROR
 export const ErrorContainerSC = styled.section`
 	display: flex;

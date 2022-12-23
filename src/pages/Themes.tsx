@@ -1,93 +1,99 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import ColourPalette from "../components/ColourPalette";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
 	SidebarUlSC,
 	SidebarLiSC,
 	SidebarLinkSC,
 	ThemeContainerSC,
 	ThemeHeaderSC,
+	PaletteListSC,
+	SidebarMainSC,
+	SidebarDivSC,
+	SidebarButtonSC,
+	SidebarSC,
+	ThemeListSC,
 } from "../styles/styledComponents";
 import PaletteInterface from "../types/paletteInterface";
 import getUserId from "../functions/getUserId";
 import { getThemedPalettes, getThemes } from "../functions/getData";
+import { LeftArrow, RightArrow } from "../components/SvgComponents";
+import ThemedPalettes from "../components/ThemedPalettes";
 
 const Themes: React.FC = () => {
 	const id = getUserId();
-	const [Themes, setThemes] = useState([]);
+	const [show, setShow] = useState(false);
+	const [ThemesList, setThemesList] = useState<string[]>([]);
 	const [Palettes, setPalettes] = useState<PaletteInterface[]>([]);
-	const [loadedThemes, setLoadedThemes] = useState(false);
-	const [User, setUser] = useState(id);
+	const [loaded, setLoaded] = useState(false);
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		const loggedInUser = localStorage.getItem("id");
-		if (loggedInUser && loggedInUser !== "-1") {
-			const id = getUserId();
-			setUser(id);
-		} else {
+		if (!loggedInUser || loggedInUser === "-1") {
 			navigate("/");
 		}
-	}, []);
+	});
 	const setDataThemes = async () => {
 		if (typeof id === "string") {
 			const data = await getThemes(id);
-			setThemes(data);
-			setLoadedThemes(true);
+			console.log("themes", data);
+			setThemesList(data);
 		}
 	};
-	if (!loadedThemes) {
+	const setThemedPalettes = async (index: number) => {
+		const data: PaletteInterface[] = await getThemedPalettes(
+			id,
+			ThemesList[index]
+		);
+		return data;
+		// setPalettes(data);
+		// console.log("Palettes:", data);
+	};
+	useEffect(() => {
 		setDataThemes();
-	}
+	}, []);
 
 	return (
-		<main>
-			<nav>
-				<SidebarUlSC>
-					{Themes.map((theme, index) => {
-						return (
-							<SidebarLiSC key={`${index}-${theme}`}>
-								<SidebarLinkSC to={`#${theme}`}>
-									{theme}
-								</SidebarLinkSC>
-							</SidebarLiSC>
-						);
-					})}
-				</SidebarUlSC>
-			</nav>
-			{Themes.map((theme: string) => {
-				// for each theme, fetch all palettes in that theme
-				// is there a way to ensure /palettes/id/theme returns an array of objects
-				// even if there is only one?
-				const setPaletteThemes = async () => {
-					const data: PaletteInterface[] | "error" =
-						await getThemedPalettes(id, theme);
-					if (typeof data === "string") {
-						console.log("ERROR");
-					} else {
-						setPalettes(data);
-						console.log("Palettes:", Palettes);
-					}
-				};
-				setPaletteThemes();
-				// response: data = [{Palette}]
-				//setPalettes(data);
-				//const palettes: Palette[] = data;
-				return (
-					<ThemeContainerSC id={theme} key={theme}>
-						<ThemeHeaderSC>{theme}</ThemeHeaderSC>
-						{Palettes.map((palette: PaletteInterface) => {
+		<SidebarMainSC>
+			<SidebarDivSC>
+				<SidebarButtonSC
+					style={{ display: show ? "unset" : "none" }}
+					onClick={() => {
+						setShow(!show);
+					}}
+				>
+					<LeftArrow />
+				</SidebarButtonSC>
+				<SidebarButtonSC
+					style={{ display: show ? "none" : "unset" }}
+					onClick={() => {
+						setShow(!show);
+					}}
+				>
+					<RightArrow />
+				</SidebarButtonSC>
+				<SidebarSC style={{ display: show ? "unset" : "none" }}>
+					<SidebarUlSC>
+						{ThemesList.map((theme: string, index: number) => {
 							return (
-								<ColourPalette
-									palette={palette}
-									key={`${palette.name}-${palette.id}`}
-								></ColourPalette>
+								<SidebarLiSC key={`${index}-${theme}`}>
+									<SidebarLinkSC href={`#${theme}`}>
+										{theme}
+									</SidebarLinkSC>
+								</SidebarLiSC>
 							);
 						})}
-					</ThemeContainerSC>
-				);
-			})}
-		</main>
+					</SidebarUlSC>
+				</SidebarSC>
+			</SidebarDivSC>
+			<ThemeListSC>
+				{ThemesList.map((theme: string) => {
+					return <ThemedPalettes theme={theme} />;
+				})}
+			</ThemeListSC>
+		</SidebarMainSC>
 	);
 };
 

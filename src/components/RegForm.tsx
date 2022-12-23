@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import request from "../functions/request";
-import { databasePath } from "../functions/request";
 import {
 	LoginFormSC,
 	LoginInputSC,
@@ -10,12 +9,6 @@ import {
 	LoginTagSC,
 	SubmitSC,
 } from "../styles/styledComponents";
-import UserInterface from "../types/userInterface";
-
-interface User {
-	username: string;
-	password: string;
-}
 
 const RegForm: React.FC = () => {
 	const [Username, setUsername] = useState<string>();
@@ -37,9 +30,9 @@ const RegForm: React.FC = () => {
 						data
 					);
 					const resData = await res.json();
-					if (typeof resData === "string") {
-						console.log(resData);
-						localStorage.setItem("id", resData);
+					console.log("register", resData);
+					if (res.ok) {
+						localStorage.setItem("id", `${resData}`);
 						navigate("/palettes");
 					} else {
 						window.alert(resData.detail);
